@@ -8,6 +8,7 @@ interface Options {
 }
 
 export function prepareDocument<TDocument>(
+  // deno-lint-ignore no-explicit-any
   doc: any,
   dateNow: Date,
   options: Options,
@@ -15,15 +16,15 @@ export function prepareDocument<TDocument>(
   const { docVersioning, docDates } = options
 
   const {
-    _id: objectId,
-    id,
-    version,
-    createdAt,
-    updatedAt,
+    // _id: objectId,
+    // id,
+    // version,
+    // createdAt,
+    // updatedAt,
     ...data
-  } = doc as any
+  } = doc
 
-  let _id = getMongoDocumentId(doc, options)
+  const _id = getMongoDocumentId(doc, options)
 
   // prepare final document
   return {
@@ -40,6 +41,7 @@ export function getMongoDocumentId<TDocument>(
 ): Bson.ObjectId | string {
   const { idMapping, idTransformation } = options
 
+  // deno-lint-ignore no-explicit-any
   const { _id: objectId, id } = doc as any
 
   let _id = objectId
@@ -56,11 +58,12 @@ export function getMongoDocumentId<TDocument>(
 }
 
 export function transformDocumentBack<TDocument>(
-  doc: any,
+  doc: TDocument,
   options: Options,
 ): TDocument {
   const { idMapping, idTransformation } = options
 
+  // deno-lint-ignore no-explicit-any
   let result = doc as any
 
   if (idTransformation) {
@@ -160,7 +163,7 @@ export function prepareUpdateFilter<TDocument>(
       ...result,
 
       $inc: {
-        ...(query.$inc as any),
+        ...query.$inc,
         version: 1,
       },
     }
@@ -171,7 +174,7 @@ export function prepareUpdateFilter<TDocument>(
       ...result,
 
       $set: {
-        ...(query.$set as any),
+        ...query.$set,
         updatedAt: dateNow,
       },
     }

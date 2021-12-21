@@ -167,6 +167,7 @@ export class MangoRepo<TDocument> {
       })
     }
 
+    // deno-lint-ignore no-explicit-any
     return insertedIds.map((x: any) => x.toString())
   }
 
@@ -204,6 +205,7 @@ export class MangoRepo<TDocument> {
 
     const finalFilter = prepareFilter(filter, this.options)
 
+    // deno-lint-ignore no-explicit-any
     const finalUpdateFilter: any = prepareUpdateFilter(
       updateQuery,
       now,
@@ -245,6 +247,7 @@ export class MangoRepo<TDocument> {
 
     const finalFilter = prepareFilter(filter, this.options)
 
+    // deno-lint-ignore no-explicit-any
     const finalUpdateQuery: any = prepareUpdateFilter(
       updateQuery,
       now,
@@ -306,6 +309,8 @@ export class MangoRepo<TDocument> {
     const now = new Date()
 
     const value = idTransformation ? new Bson.ObjectId(id) : id
+
+    // deno-lint-ignore no-explicit-any
     const filter: any = { _id: value }
 
     const doc = await this.collection.findOne(filter, {
