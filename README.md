@@ -14,3 +14,24 @@ every time you call update
 <br/>
 
 <br/>
+
+## Example:
+```ts
+import {
+  connectMongo,
+  MangoRepo,
+} from 'https://deno.land/x/jok_mango@v0.1.1/mod.ts'
+
+const { db } = await connectMongo('mongo://localhost/test')
+const repo = new MangoRepo<{ name: string; avatarUrl: string }>(
+  db,
+  'users',
+)
+
+const result = await repo.insertOne({
+  name: 'playerx',
+  avatarUrl: 'myJokAvatar',
+})
+
+console.log(result)
+```
