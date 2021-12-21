@@ -1,15 +1,16 @@
 # 🥭 Mango
+Lightweight abstraction layer on top of mongodb driver to provide following features.
 
 ## Features
 
-✅ Stores `_id: ObjectId` field, but wraps it to the `id: string`
+✅ `_id` mapping to `id`
 
-✅ Documents have `version: number` out of the box, and its increased by `1`
-every time you call update
+✅ `_id` transformation from `ObjectId` to `string`. So you will work always with strings and mongo will store `ObjectId`. You will not need to worry about conversions any more.
 
-✅ Every document has `createdAt` and `updatedAt` props
+✅ Versioning system can be enabled per collection. `version: number`  and its increased by `1` every time you call update
 
-✅ Soft Delete & Hard Delete ability for documents
+✅ Doc Dates can be enabled per collection and documents will have `createdAt` and `updatedAt`
+
 
 <br/>
 
