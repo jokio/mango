@@ -12,7 +12,7 @@ Deno.test('it should create MangoRepo class', async () => {
     name: 'Ezeki',
   })
 
-  const tt = await repo.updateOne(
+  await repo.updateOne(
     { id: result.id },
     {
       $addToSet: {
