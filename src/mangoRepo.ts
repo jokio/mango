@@ -131,7 +131,7 @@ export class MangoRepo<TDocument> {
 
       logger({
         collectionName: this.collectionName,
-        action: 'insertOne',
+        action: 'insert',
         duration,
       })
     }
@@ -359,7 +359,7 @@ export class MangoRepo<TDocument> {
 
       logger({
         collectionName: this.collectionName,
-        action: 'query',
+        action: 'find',
         filter,
         duration,
       })
