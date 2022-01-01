@@ -1,87 +1,88 @@
 import { Database, MongoClient } from '../deps.ts'
-import { assertEquals } from './test.deps.ts'
+import { connectMongo } from '../src/connectMongo.ts'
 
 const hostname = '127.0.0.1'
 
-export function testWithClient(
-  name: string,
-  fn: (client: MongoClient) => void | Promise<void>,
+// export function testWithClient(
+//   name: string,
+//   fn: (client: MongoClient) => void | Promise<void>,
+// ) {
+//   Deno.test(name, async () => {
+//     const client = await getClient()
+//     await fn(client)
+//     client.close()
+//   })
+// }
+
+export async function withDb(
+  fn: (db: Database, client: MongoClient) => void | Promise<void>,
 ) {
-  Deno.test(name, async () => {
-    const client = await getClient()
-    await fn(client)
-    client.close()
-  })
+  const { client } = await connectMongo(
+    `mongodb://${hostname}:27017/test`,
+  )
+
+  await fn(client.database(), client)
+
+  client.close()
 }
 
-export function testWithDb(
-  name: string,
-  fn: (db: Database) => void | Promise<void>,
-) {
-  Deno.test(name, async () => {
-    const client = await getClient()
-    await fn(client.database())
-    client.close()
-  })
-}
+// export function testWithTestDBClient(
+//   name: string,
+//   fn: (db: Database) => void | Promise<void>,
+// ) {
+//   Deno.test(name, async () => {
+//     const client = await getClient()
+//     const db = client.database('test')
+//     await fn(db)
+//     await db
+//       .collection('mongo_test_users')
+//       .drop()
+//       .catch(e => e)
+//     client.close()
+//   })
+// }
 
-export function testWithTestDBClient(
-  name: string,
-  fn: (db: Database) => void | Promise<void>,
-) {
-  Deno.test(name, async () => {
-    const client = await getClient()
-    const db = client.database('test')
-    await fn(db)
-    await db
-      .collection('mongo_test_users')
-      .drop()
-      .catch(e => e)
-    client.close()
-  })
-}
+// async function getClient(): Promise<MongoClient> {
+//   const client = new MongoClient()
+//   await client.connect(`mongodb://${hostname}:27017`)
+//   return client
+// }
 
-async function getClient(): Promise<MongoClient> {
-  const client = new MongoClient()
-  await client.connect(`mongodb://${hostname}:27017`)
-  return client
-}
+// export function assertArrayBufferEquals(
+//   actual: ArrayBuffer,
+//   expected: ArrayBuffer,
+// ) {
+//   assertEquals(arrayBufferEquals(actual, expected), true)
+// }
 
-export function assertArrayBufferEquals(
-  actual: ArrayBuffer,
-  expected: ArrayBuffer,
-) {
-  assertEquals(arrayBufferEquals(actual, expected), true)
-}
+// export function assertArrayBufferNotEquals(
+//   actual: ArrayBuffer,
+//   expected: ArrayBuffer,
+// ) {
+//   assertEquals(arrayBufferEquals(actual, expected), false)
+// }
 
-export function assertArrayBufferNotEquals(
-  actual: ArrayBuffer,
-  expected: ArrayBuffer,
-) {
-  assertEquals(arrayBufferEquals(actual, expected), false)
-}
+// function arrayBufferEquals(
+//   buf1: ArrayBuffer,
+//   buf2: ArrayBuffer,
+// ): unknown {
+//   if (buf1 === buf2) {
+//     return true
+//   }
 
-function arrayBufferEquals(
-  buf1: ArrayBuffer,
-  buf2: ArrayBuffer,
-): unknown {
-  if (buf1 === buf2) {
-    return true
-  }
+//   if (buf1.byteLength !== buf2.byteLength) {
+//     return false
+//   }
 
-  if (buf1.byteLength !== buf2.byteLength) {
-    return false
-  }
+//   const view1 = new DataView(buf1)
+//   const view2 = new DataView(buf2)
 
-  const view1 = new DataView(buf1)
-  const view2 = new DataView(buf2)
+//   let i = buf1.byteLength
+//   while (i--) {
+//     if (view1.getUint8(i) !== view2.getUint8(i)) {
+//       return false
+//     }
+//   }
 
-  let i = buf1.byteLength
-  while (i--) {
-    if (view1.getUint8(i) !== view2.getUint8(i)) {
-      return false
-    }
-  }
-
-  return true
-}
+//   return true
+// }

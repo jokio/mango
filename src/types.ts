@@ -22,3 +22,10 @@ export type MangoLoggerFn = (data: {
 }) => void
 
 export type WithOptionalId<T> = T & { id?: string | Bson.ObjectId }
+
+export type UpdateManyResult = {
+  upsertedIds: string[]
+  upsertedCount: number
+  modifiedCount: number
+  matchedCount: number
+}

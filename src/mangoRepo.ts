@@ -14,7 +14,12 @@ import {
   prepareUpdateFilter,
   transformDocumentBack,
 } from './domain/transformDocument.ts'
-import { Data, MangoLoggerFn, WithOptionalId } from './types.ts'
+import {
+  Data,
+  MangoLoggerFn,
+  UpdateManyResult,
+  WithOptionalId,
+} from './types.ts'
 
 export interface MangoRepoOptions {
   /**
@@ -101,7 +106,7 @@ export class MangoRepo<TDocument> {
     }
   }
 
-  async insertOne(
+  async insert(
     doc: WithOptionalId<Data<TDocument>>,
   ): Promise<TDocument> {
     const { logger } = this.options
@@ -240,7 +245,7 @@ export class MangoRepo<TDocument> {
     filter: Filter<TDocument>,
     updateQuery: UpdateFilter<Data<TDocument>>,
     options?: UpdateOptions,
-  ): Promise<string[]> {
+  ): Promise<UpdateManyResult> {
     const { logger } = this.options
 
     const now = new Date()
@@ -254,7 +259,12 @@ export class MangoRepo<TDocument> {
       this.options,
     )
 
-    const { upsertedIds } = await this.collection.updateMany(
+    const {
+      upsertedIds,
+      modifiedCount,
+      matchedCount,
+      upsertedCount,
+    } = await this.collection.updateMany(
       finalFilter,
       finalUpdateQuery,
       options,
@@ -271,7 +281,12 @@ export class MangoRepo<TDocument> {
       })
     }
 
-    return upsertedIds?.map(x => x.toHexString()) ?? []
+    return {
+      upsertedIds: upsertedIds?.map(x => x.toHexString()) ?? [],
+      modifiedCount,
+      matchedCount,
+      upsertedCount,
+    }
   }
 
   async deleteMany(
@@ -314,7 +329,7 @@ export class MangoRepo<TDocument> {
     const filter: any = { _id: value }
 
     const doc = await this.collection.findOne(filter, {
-      findOne: true,
+      // findOne: true,
     })
 
     const result = doc
@@ -334,7 +349,7 @@ export class MangoRepo<TDocument> {
     return result
   }
 
-  async query(
+  async find(
     filter: Filter<TDocument>,
     options?: FindOptions,
   ): Promise<TDocument[]> {
