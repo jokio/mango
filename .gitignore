@@ -1,3 +1,5 @@
 .deno_plugins
 .DS_Store
 .vscode/
+cov/
+cov.lcov
