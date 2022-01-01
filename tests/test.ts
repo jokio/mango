@@ -4,7 +4,7 @@ import { connectMongo } from '../src/connectMongo.ts'
 
 Deno.test('it should create MangoRepo class', async () => {
   const { client, db } = await connectMongo(
-    'mongodb://localhost:27017',
+    'mongodb://localhost:27017/test',
   )
   const repo = new MangoRepo<{ id: string; name: string }>(db, 'test')
 

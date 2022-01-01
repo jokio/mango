@@ -1,9 +1,21 @@
 import { MongoClient } from '../deps.ts'
 
-export async function connectMongo(connectionString: string) {
+interface Options {
+  /**
+   * @default SCRAM-SHA-1
+   */
+  authMechanism?: string
+}
+
+export async function connectMongo(
+  connectionString: string,
+  options?: Options,
+) {
   if (!connectionString) {
     throw new Error('Invalid connection string')
   }
+
+  const { authMechanism = 'SCRAM-SHA-1' } = options || {}
 
   let finalConnectionString = connectionString
 
@@ -11,6 +23,15 @@ export async function connectMongo(connectionString: string) {
     finalConnectionString +=
       (!connectionString.includes('?') ? '?' : '&') +
       'authSource=admin'
+  }
+
+  if (
+    !finalConnectionString.includes('authMechanism') &&
+    authMechanism
+  ) {
+    finalConnectionString +=
+      (!finalConnectionString.includes('?') ? '?' : '&') +
+      `authMechanism=${authMechanism}`
   }
 
   const client = new MongoClient()

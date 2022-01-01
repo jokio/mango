@@ -14,6 +14,17 @@ export function testWithClient(
   })
 }
 
+export function testWithDb(
+  name: string,
+  fn: (db: Database) => void | Promise<void>,
+) {
+  Deno.test(name, async () => {
+    const client = await getClient()
+    await fn(client.database())
+    client.close()
+  })
+}
+
 export function testWithTestDBClient(
   name: string,
   fn: (db: Database) => void | Promise<void>,
