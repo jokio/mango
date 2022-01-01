@@ -254,12 +254,7 @@ export class MangoRepo<TDocument> {
       this.options,
     )
 
-    const {
-      upsertedIds,
-      modifiedCount,
-      matchedCount,
-      upsertedCount,
-    } = await this.collection.updateMany(
+    const { matchedCount } = await this.collection.updateMany(
       finalFilter,
       finalUpdateQuery,
       options,
