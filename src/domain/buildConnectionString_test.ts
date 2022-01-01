@@ -25,7 +25,7 @@ Deno.test('should have authMechanism', () => {
     'T1',
   )
 
-  assertEquals(result.indexOf('?authMechanism=T1') > -1, true)
+  assertEquals(result.indexOf('&authMechanism=T1') > -1, true)
 })
 
 Deno.test('should have authMechanism with another param', () => {
