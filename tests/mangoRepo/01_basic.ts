@@ -1,3 +1,4 @@
+import { Database } from '../../deps.ts'
 import { MangoRepo, ObjectId } from '../../mod.ts'
 import { withDb } from '../common.ts'
 import { assertEquals, assertExists } from '../test.deps.ts'
@@ -10,11 +11,9 @@ type User = {
   age?: number
 }
 
-const collectionName = 'test'
-
 Deno.test('should create new entry', () =>
   withDb(async db => {
-    const repo = new MangoRepo<User>(db, collectionName)
+    const repo = getRepo(db)
 
     const nickname = 'ezeki'
 
@@ -28,7 +27,7 @@ Deno.test('should create new entry', () =>
 
 Deno.test('should create many entries', () =>
   withDb(async db => {
-    const repo = new MangoRepo<User>(db, collectionName)
+    const repo = getRepo(db)
 
     const ids = await repo.insertMany([
       { nickname: 'u1' },
@@ -42,7 +41,7 @@ Deno.test('should create many entries', () =>
 
 Deno.test('should update entry', () =>
   withDb(async db => {
-    const repo = new MangoRepo<User>(db, collectionName)
+    const repo = getRepo(db)
 
     const item = await repo.insert({ nickname: 'EZ' })
 
@@ -69,7 +68,7 @@ Deno.test('should update entry', () =>
 
 Deno.test('should update many entries', () =>
   withDb(async db => {
-    const repo = new MangoRepo<User>(db, collectionName)
+    const repo = getRepo(db)
 
     const uniqueId = Date.now().toString()
 
@@ -92,7 +91,7 @@ Deno.test('should update many entries', () =>
 
 Deno.test('should delete many entries', () =>
   withDb(async db => {
-    const repo = new MangoRepo<User>(db, collectionName)
+    const repo = getRepo(db)
 
     const uniqueId = Date.now().toString()
 
@@ -110,7 +109,7 @@ Deno.test('should delete many entries', () =>
 
 Deno.test('should query documents count', () =>
   withDb(async db => {
-    const repo = new MangoRepo<User>(db, collectionName)
+    const repo = getRepo(db)
 
     const uniqueId = Date.now().toString()
 
@@ -134,7 +133,7 @@ Deno.test('should query documents count', () =>
 
 Deno.test('should query document by id', () =>
   withDb(async db => {
-    const repo = new MangoRepo<User>(db, collectionName)
+    const repo = getRepo(db)
 
     const item = await repo.insert({
       nickname: 'RandomUserName',
@@ -151,7 +150,7 @@ Deno.test('should query document by id', () =>
 
 Deno.test('should query documents by filter', () =>
   withDb(async db => {
-    const repo = new MangoRepo<User>(db, collectionName)
+    const repo = getRepo(db)
 
     const uniqueId = Date.now().toString()
 
@@ -175,7 +174,7 @@ Deno.test('should query documents by filter', () =>
 
 Deno.test('should query documents by _id filter (complex)', () =>
   withDb(async db => {
-    const repo = new MangoRepo<User>(db, collectionName)
+    const repo = getRepo(db)
 
     const id1 = new ObjectId().toHexString()
     const id2 = new ObjectId().toHexString()
@@ -201,26 +200,6 @@ Deno.test('should query documents by _id filter (complex)', () =>
   }),
 )
 
-// Deno.test(
-//   'should query documents by _id filter (complex)',
-//   async () => {
-//     const repo = new MangoRepo<User>(db, collectionName)
-
-//     const id1 = new ObjectId().toHexString()
-//     const id2 = new ObjectId().toHexString()
-
-//     const createdCount = await repo.createMany([
-//       { id: id1, nickname: 'U1', age: 31 },
-//       { id: id2, nickname: 'U2', age: 31 },
-//       { nickname: 'U3', age: 31 },
-//       { nickname: 'U3', age: 30 },
-//     ])
-
-//     const count1 = await repo.count({ id: { $in: [id1] } })
-//     const count2 = await repo.count({ id: { $in: [id1, id2] } })
-
-//     expect(createdCount).toBe(4)
-//     expect(count1).toBe(1)
-//     expect(count2).toBe(2)
-//   },
-// )
+function getRepo(db: Database) {
+  return new MangoRepo<User>(db, 'test')
+}
