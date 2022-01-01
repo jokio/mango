@@ -21,7 +21,7 @@ Lightweight abstraction layer on top of mongodb driver to provide following feat
 
 ## Basic Example:
 ```ts
-import { connectMongo, MangoRepo } from 'https://deno.land/x/jok_mango@v1.3.0/mod.ts'
+import { connectMongo, MangoRepo } from 'https://deno.land/x/jok_mango@v1.4.0/mod.ts'
 
 type User = {
   name: string
