@@ -3,14 +3,6 @@ import { MangoRepo, ObjectId } from '../../mod.ts'
 import { withDb } from '../common.ts'
 import { assertEquals, assertExists } from '../test.deps.ts'
 
-type User = {
-  id: string
-  nickname: string
-  uniqueId?: string
-  zodiac?: string
-  age?: number
-}
-
 Deno.test('should create new entry', () =>
   withDb(async db => {
     const repo = getRepo(db)
@@ -202,4 +194,12 @@ Deno.test('should query documents by _id filter (complex)', () =>
 
 function getRepo(db: Database) {
   return new MangoRepo<User>(db, 'test')
+}
+
+export type User = {
+  id: string
+  nickname: string
+  uniqueId?: string
+  zodiac?: string
+  age?: number
 }

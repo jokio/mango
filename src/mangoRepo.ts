@@ -318,7 +318,9 @@ export class MangoRepo<TDocument> {
     return deletedCount
   }
 
-  async getById(id: string): Promise<TDocument | null> {
+  async getById(
+    id: string | Bson.ObjectId,
+  ): Promise<TDocument | null> {
     const { idTransformation, logger } = this.options
 
     const now = new Date()
