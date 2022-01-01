@@ -7,7 +7,16 @@ Deno.test('should have authSource', () => {
     '',
   )
 
-  assertEquals(result.indexOf('authSource=admin') > -1, true)
+  assertEquals(result.indexOf('?authSource=admin') > -1, true)
+})
+
+Deno.test('should have authSource with another param', () => {
+  const result = buildConnectionString(
+    'mongodb://localhost:27017?something=1',
+    '',
+  )
+
+  assertEquals(result.indexOf('&authSource=admin') > -1, true)
 })
 
 Deno.test('should have authMechanism', () => {
@@ -16,5 +25,14 @@ Deno.test('should have authMechanism', () => {
     'T1',
   )
 
-  assertEquals(result.indexOf('authMechanism=T1') > -1, true)
+  assertEquals(result.indexOf('?authMechanism=T1') > -1, true)
+})
+
+Deno.test('should have authMechanism with another param', () => {
+  const result = buildConnectionString(
+    'mongodb://localhost:27017?something=1',
+    'T1',
+  )
+
+  assertEquals(result.indexOf('&authMechanism=T1') > -1, true)
 })
