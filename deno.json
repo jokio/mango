@@ -1,5 +1,4 @@
 {
-  "compilerOptions": {},
   "lint": {
     "files": {
       "include": ["src/"],

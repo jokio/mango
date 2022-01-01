@@ -69,7 +69,7 @@ Deno.test('should update many entries', () =>
       { nickname: 'U2', age: 20, uniqueId },
     ])
 
-    const { matchedCount } = await repo.updateMany(
+    const matchedCount = await repo.updateMany(
       { age: 20, uniqueId },
       { $inc: { age: 1 } },
     )

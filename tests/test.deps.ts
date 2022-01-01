@@ -1,6 +1,7 @@
 export {
   assert,
   assertEquals,
+  assertNotEquals,
   assertRejects,
   assertThrows,
   assertExists,

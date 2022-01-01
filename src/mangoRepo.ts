@@ -14,12 +14,7 @@ import {
   prepareUpdateFilter,
   transformDocumentBack,
 } from './domain/transformDocument.ts'
-import {
-  Data,
-  MangoLoggerFn,
-  UpdateManyResult,
-  WithOptionalId,
-} from './types.ts'
+import { Data, MangoLoggerFn, WithOptionalId } from './types.ts'
 
 export interface MangoRepoOptions {
   /**
@@ -245,7 +240,7 @@ export class MangoRepo<TDocument> {
     filter: Filter<TDocument>,
     updateQuery: UpdateFilter<Data<TDocument>>,
     options?: UpdateOptions,
-  ): Promise<UpdateManyResult> {
+  ): Promise<number> {
     const { logger } = this.options
 
     const now = new Date()
@@ -281,12 +276,7 @@ export class MangoRepo<TDocument> {
       })
     }
 
-    return {
-      upsertedIds: upsertedIds?.map(x => x.toHexString()) ?? [],
-      modifiedCount,
-      matchedCount,
-      upsertedCount,
-    }
+    return matchedCount
   }
 
   async deleteMany(

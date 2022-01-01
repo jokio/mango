@@ -29,7 +29,7 @@ Deno.test('should inc version on updateOne & updateMany', () =>
     assertExists(updatedItem)
     assertEquals(updatedItem.version, 2)
 
-    const { modifiedCount: count } = await repo.updateMany(
+    const count = await repo.updateMany(
       { tag: 'test' },
       { $set: { tag: 'Test' } },
     )
