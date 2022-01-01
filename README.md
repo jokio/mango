@@ -19,20 +19,22 @@ Lightweight abstraction layer on top of mongodb driver to provide following feat
 
 <br/>
 
-## Example:
+## Basic Example:
 ```ts
-import {
-  connectMongo,
-  MangoRepo,
-} from 'https://deno.land/x/jok_mango@v0.1.1/mod.ts'
+import { connectMongo, MangoRepo } from 'https://deno.land/x/jok_mango@v1.3.0/mod.ts'
+
+type User = {
+  name: string
+  avatarUrl: string
+}
 
 const { db } = await connectMongo('mongo://localhost/test')
-const repo = new MangoRepo<{ name: string; avatarUrl: string }>(
+const repo = new MangoRepo<User>(
   db,
   'users',
 )
 
-const result = await repo.insertOne({
+const result = await repo.insert({
   name: 'playerx',
   avatarUrl: 'myJokAvatar',
 })
