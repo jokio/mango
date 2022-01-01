@@ -1,4 +1,5 @@
 import { MongoClient } from '../deps.ts'
+import { buildConnectionString } from './domain/buildConnectionString.ts'
 
 interface Options {
   /**
@@ -17,22 +18,10 @@ export async function connectMongo(
 
   const { authMechanism = 'SCRAM-SHA-1' } = options || {}
 
-  let finalConnectionString = connectionString
-
-  if (!connectionString.includes('authSource')) {
-    finalConnectionString +=
-      (!connectionString.includes('?') ? '?' : '&') +
-      'authSource=admin'
-  }
-
-  if (
-    !finalConnectionString.includes('authMechanism') &&
-    authMechanism
-  ) {
-    finalConnectionString +=
-      (!finalConnectionString.includes('?') ? '?' : '&') +
-      `authMechanism=${authMechanism}`
-  }
+  const finalConnectionString = buildConnectionString(
+    connectionString,
+    authMechanism,
+  )
 
   const client = new MongoClient()
   const db = await client.connect(finalConnectionString)
