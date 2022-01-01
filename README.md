@@ -1,6 +1,9 @@
 # 🥭 Mango
 Lightweight abstraction layer on top of mongodb driver to provide following features.
 
+## 
+[![codecov](https://codecov.io/gh/jokio/mango/branch/master/graph/badge.svg?token=7Gf9AxsXBn)](https://codecov.io/gh/jokio/mango)
+
 ## Features
 
 ✅ `_id` mapping to `id`
