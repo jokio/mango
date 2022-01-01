@@ -14,9 +14,7 @@ export function buildConnectionString(
     !finalConnectionString.includes('authMechanism') &&
     authMechanism
   ) {
-    finalConnectionString +=
-      (!finalConnectionString.includes('?') ? '?' : '&') +
-      `authMechanism=${authMechanism}`
+    finalConnectionString += '&' + `authMechanism=${authMechanism}`
   }
 
   return finalConnectionString
