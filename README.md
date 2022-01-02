@@ -41,3 +41,6 @@ const result = await repo.insert({
 
 console.log(result)
 ```
+
+## Advanced Examples:
+Check out [tests/mangoRepo](https://github.com/jokio/mango/tree/master/tests/mangoRepo)
