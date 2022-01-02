@@ -1,18 +1,18 @@
 # 🥭 Mango
-Lightweight abstraction layer on top of mongodb driver to provide following features.
+Lightweight repository abstraction layer on top of the mongodb driver to provide missing features. It has never been so delicious working with `mongo`.
 
 ## 
 [![codecov](https://codecov.io/gh/jokio/mango/branch/master/graph/badge.svg?token=7Gf9AxsXBn)](https://codecov.io/gh/jokio/mango)
 
 ## Features
 
-✅ `_id` mapping to `id`
+✅ `_id` mapping to `id`. In mongo it's not possible to use id instead of _id, this feature automatically maps id field for you (enabled by default).
 
-✅ `_id` transformation from `ObjectId` to `string`. So you will work always with strings and mongo will store `ObjectId`. You will not need to worry about conversions any more.
+✅ `_id` transformation from `ObjectId` to `string`. So you will work with strings always and `ObjectId` will be stored in mongo for you. You will not need to worry about conversions any more once it's enabled (enabled by default).
 
-✅ Versioning system can be enabled per collection. `version: number`  and its increased by `1` every time you call update
+✅ Versioning system can be enabled per collection. `version: number`  and its increased by `1` every time you call update. Can be used for optimistic concurency.
 
-✅ Doc Dates can be enabled per collection and documents will have `createdAt` and `updatedAt`
+✅ Doc Dates can be enabled per collection and documents will have `createdAt` and `updatedAt`.
 
 
 <br/>
