@@ -1,4 +1,5 @@
-import { assertRejects } from '../tests/test.deps.ts'
+import { withDb } from '../tests/common.ts'
+import { assertRejects, assertExists } from '../tests/test.deps.ts'
 import { connectMongo } from './connectMongo.ts'
 
 Deno.test('should fire error on empty connectionString', () => {
@@ -8,3 +9,10 @@ Deno.test('should fire error on empty connectionString', () => {
     'Invalid connection string',
   )
 })
+
+Deno.test('should connect successfully', () =>
+  withDb((db, client) => {
+    assertExists(db)
+    assertExists(client)
+  }),
+)
