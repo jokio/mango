@@ -36,3 +36,12 @@ Deno.test('should have authMechanism with another param', () => {
 
   assertEquals(result.indexOf('&authMechanism=T1') > -1, true)
 })
+
+Deno.test('should fire error on empty connectionString', () => {
+  const result = buildConnectionString(
+    '',
+    '',
+  )
+
+  assertEquals(result.indexOf('?authSource=admin') > -1, true)
+})
