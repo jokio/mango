@@ -1,6 +1,7 @@
 # 🥭 Mango
 Lightweight repository abstraction layer on top of the mongodb driver to provide missing features. It has never been so delicious working with `mongo`.
 
+
 ## 
 [![codecov](https://codecov.io/gh/jokio/mango/branch/master/graph/badge.svg?token=7Gf9AxsXBn)](https://codecov.io/gh/jokio/mango)
 
