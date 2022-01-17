@@ -3,7 +3,7 @@ Lightweight repository abstraction layer on top of the mongodb driver to provide
 
 
 ## 
-[![codecov](https://codecov.io/gh/jokio/mango/branch/master/graph/badge.svg?token=7Gf9AxsXBn)](https://codecov.io/gh/jokio/mango)
+[![codecov](https://codecov.io/gh/jokio/mango/branch/main/graph/badge.svg?token=7Gf9AxsXBn)](https://codecov.io/gh/jokio/mango)
 
 ## Features
 
@@ -44,4 +44,4 @@ console.log(result)
 ```
 
 ## Advanced Examples:
-Check out [tests/mangoRepo](https://github.com/jokio/mango/tree/master/tests/mangoRepo)
+Check out [tests/mangoRepo](https://github.com/jokio/mango/tree/main/tests/mangoRepo)
