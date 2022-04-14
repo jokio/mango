@@ -316,6 +316,7 @@ export class MangoRepo<TDocument> {
     const filter: any = { _id: value }
 
     const doc = await this.collection.findOne(filter, {
+      noCursorTimeout: false,
       // findOne: true,
     })
 
@@ -347,7 +348,10 @@ export class MangoRepo<TDocument> {
     const finalFilter = prepareFilter(filter, this.options)
 
     const result = await this.collection
-      .find(finalFilter, options)
+      .find(finalFilter, {
+        noCursorTimeout: false,
+        ...options,
+      })
       .toArray()
 
     const finalResult: TDocument[] = result.map(x =>
