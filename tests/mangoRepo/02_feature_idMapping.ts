@@ -1,7 +1,11 @@
 import { Database } from '../../deps.ts'
 import { MangoRepo, ObjectId } from '../../mod.ts'
 import { withDb } from '../common.ts'
-import { assertEquals, assertExists } from '../test.deps.ts'
+import {
+  assertEquals,
+  assertExists,
+  assertFalse,
+} from '../test.deps.ts'
 
 Deno.test('should do the id mapping to _id and back on create', () =>
   withDb(async db => {
@@ -76,6 +80,62 @@ Deno.test('should do the id mapping to _id and back on count', () =>
     const count = await repo.count({ id: item.id })
     assertEquals(count, 1)
   }),
+)
+
+Deno.test(
+  'ensure that old id mapped field is not there after mapping, on create',
+  () =>
+    withDb(async db => {
+      const repo = getRepo(db)
+      const name = 'babt'
+
+      const item = await repo.insert({ name })
+      assertExists(item)
+
+      const dbItem = await repo.collection.findOne({
+        _id: new ObjectId(item.id),
+      })
+
+      assertExists(dbItem)
+      assertExists((dbItem as any)['_id'])
+      assertFalse(dbItem.id)
+    }),
+)
+
+Deno.test(
+  'ensure that old id mapped field is not there after mapping, on update',
+  () =>
+    withDb(async db => {
+      const repo = getRepo(db)
+      const name = 'Ezeki'
+
+      const item = await repo.insert({ name })
+      assertExists(item)
+
+      const dbItem = await repo.collection.findOne({
+        _id: new ObjectId(item.id),
+      })
+
+      await repo.collection.updateOne(
+        { _id: new ObjectId(item.id) },
+        {
+          $set: { name: 'Ezekia' },
+        },
+      )
+
+      const dbItem2 = await repo.collection.findOne({
+        _id: new ObjectId(item.id),
+      })
+
+      assertExists(dbItem2)
+      assertExists((dbItem2 as any)['_id'])
+      assertEquals(
+        (dbItem2 as any)['_id'].toHexString(),
+        item.id.toHexString(),
+      )
+      assertEquals(dbItem2.name, 'Ezekia')
+      assertFalse(dbItem2.id)
+    }),
 )
 
 function getRepo(db: Database) {
