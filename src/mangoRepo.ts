@@ -115,7 +115,9 @@ export class MangoRepo<TDocument> {
       this.options,
     )
 
-    const insertedId = await this.collection.insertOne(finalDoc)
+    const insertedId = await this.collection.insertOne(
+      finalDoc as any,
+    )
 
     if (!insertedId) {
       throw new Error('MANGO_CREATE_ONE_FAILED')
@@ -151,7 +153,7 @@ export class MangoRepo<TDocument> {
     )
 
     const { insertedIds, insertedCount } =
-      await this.collection.insertMany(finalDocs)
+      await this.collection.insertMany(finalDocs as any)
 
     if (insertedCount !== docs.length) {
       throw new Error('MANGO_CREATE_MANY_FAILED')
