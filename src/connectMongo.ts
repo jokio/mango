@@ -23,7 +23,9 @@ export async function connectMongo(
   // )
 
   const client = new MongoClient(connectionString)
-  const db = await client.connect()
+  await client.connect()
+
+  const db = client.db()
 
   return { client, db }
 }
