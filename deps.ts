@@ -10,4 +10,4 @@ export {
   type ObjectId,
   type UpdateFilter,
   type UpdateOptions,
-} from 'npm:mongodb'
+} from 'npm:mongodb@6.1.0'
