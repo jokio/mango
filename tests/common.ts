@@ -10,7 +10,7 @@ export async function withDb(
     `mongodb://${hostname}:27017/test`,
   )
 
-  await fn(client.database(), client)
+  await fn(client.db(), client)
 
   client.close()
 }

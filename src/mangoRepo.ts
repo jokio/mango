@@ -3,8 +3,9 @@ import {
   Bson,
   Database,
   DeleteOptions,
+  Document,
   Filter,
-  FindAndModifyOptions,
+  FindOneAndUpdateOptions,
   FindOptions,
   UpdateFilter,
   UpdateOptions,
@@ -74,7 +75,7 @@ export interface MangoRepoOptions {
 /**
  * Repository to work with mongodb
  */
-export class MangoRepo<TDocument> {
+export class MangoRepo<TDocument extends Document> {
   protected options: Required<MangoRepoOptions>
 
   get collection() {
@@ -171,7 +172,7 @@ export class MangoRepo<TDocument> {
     }
 
     // deno-lint-ignore no-explicit-any
-    return insertedIds.map((x: any) => x.toString())
+    return Object.values(insertedIds).map((x: any) => x.toString())
   }
 
   async count(filter: Filter<TDocument> = {}) {
@@ -200,7 +201,7 @@ export class MangoRepo<TDocument> {
   async updateOne(
     filter: Filter<TDocument>,
     updateQuery: UpdateFilter<Data<TDocument>>,
-    options?: FindAndModifyOptions,
+    options?: FindOneAndUpdateOptions,
   ): Promise<TDocument | null> {
     const { logger, returnLatestDocumentByDefault } = this.options
 
@@ -215,11 +216,17 @@ export class MangoRepo<TDocument> {
       this.options,
     )
 
-    const value = await this.collection.findAndModify(finalFilter, {
-      new: returnLatestDocumentByDefault,
-      ...options,
-      update: finalUpdateFilter,
-    })
+    const value = await this.collection.findOneAndUpdate(
+      finalFilter,
+      finalUpdateFilter,
+      {
+        returnDocument:
+          options?.returnDocument || returnLatestDocumentByDefault
+            ? 'after'
+            : 'before',
+        ...options,
+      },
+    )
 
     if (logger) {
       const duration = Date.now() - now.getTime()
@@ -232,8 +239,11 @@ export class MangoRepo<TDocument> {
       })
     }
 
-    const finalResult = value
-      ? transformDocumentBack<TDocument>(value, this.options)
+    const finalResult = value.value
+      ? transformDocumentBack<TDocument>(
+          value.value as any,
+          this.options,
+        )
       : null
 
     return finalResult
@@ -287,10 +297,7 @@ export class MangoRepo<TDocument> {
 
     const finalFilter = prepareFilter(filter, this.options)
 
-    const deletedCount = await this.collection.deleteMany(
-      finalFilter,
-      options,
-    )
+    const res = await this.collection.deleteMany(finalFilter, options)
 
     if (logger) {
       const duration = Date.now() - now.getTime()
@@ -303,7 +310,7 @@ export class MangoRepo<TDocument> {
       })
     }
 
-    return deletedCount
+    return res.deletedCount
   }
 
   async getById(
@@ -324,7 +331,7 @@ export class MangoRepo<TDocument> {
     })
 
     const result = doc
-      ? transformDocumentBack<TDocument>(doc, this.options)
+      ? transformDocumentBack<TDocument>(doc as any, this.options)
       : null
 
     if (logger) {
@@ -357,8 +364,8 @@ export class MangoRepo<TDocument> {
       })
       .toArray()
 
-    const finalResult: TDocument[] = result.map(x =>
-      transformDocumentBack(x, this.options),
+    const finalResult: TDocument[] = result.map(
+      x => transformDocumentBack(x, this.options) as TDocument,
     )
 
     if (logger) {

@@ -1,5 +1,4 @@
 import { MongoClient } from '../deps.ts'
-import { buildConnectionString } from './domain/buildConnectionString.ts'
 
 interface Options {
   /**
@@ -16,15 +15,15 @@ export async function connectMongo(
     throw new Error('Invalid connection string')
   }
 
-  const { authMechanism = 'SCRAM-SHA-1' } = options || {}
+  // const { authMechanism = 'SCRAM-SHA-1' } = options || {}
 
-  const finalConnectionString = buildConnectionString(
-    connectionString,
-    authMechanism,
-  )
+  // const finalConnectionString = buildConnectionString(
+  //   connectionString,
+  //   authMechanism,
+  // )
 
-  const client = new MongoClient()
-  const db = await client.connect(finalConnectionString)
+  const client = new MongoClient(connectionString)
+  const db = await client.connect()
 
   return { client, db }
 }

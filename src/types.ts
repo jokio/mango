@@ -17,7 +17,7 @@ export type MangoDocumentDates = {
 export type MangoLoggerFn = (data: {
   collectionName: string
   action: string
-  filter?: Filter<unknown>
+  filter?: Filter<any>
   duration: number
 }) => void
 

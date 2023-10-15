@@ -1,4 +1,4 @@
-import { assertRejects, assertExists } from '../tests/test.deps.ts'
+import { assertExists, assertRejects } from '../tests/test.deps.ts'
 import { connectMongo } from './connectMongo.ts'
 
 Deno.test('should fire error on empty connectionString', () => {
@@ -26,7 +26,7 @@ Deno.test('should fire error on null connectionString', () => {
 })
 
 Deno.test('should connects successfully', async () => {
-  const result = await connectMongo('mongo://127.0.0.1/test')
+  const result = await connectMongo('mongodb://127.0.0.1/test')
   assertExists(result)
   assertExists(result.client)
   assertExists(result.db)

@@ -165,7 +165,7 @@ export function prepareUpdateFilter<TDocument>(
       $inc: {
         ...query.$inc,
         version: 1,
-      },
+      } as any,
     }
   }
 
@@ -176,7 +176,7 @@ export function prepareUpdateFilter<TDocument>(
       $set: {
         ...query.$set,
         updatedAt: dateNow,
-      },
+      } as any,
     }
   }
 
