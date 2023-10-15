@@ -7,7 +7,7 @@ export async function withDb(
   fn: (db: Database, client: MongoClient) => void | Promise<void>,
 ) {
   const { client } = await connectMongo(
-    `mongodb://${hostname}:27017/test`,
+    `mongodb+srv://dev:v5ww8kQs75CDdYuu@jok-dev.z5ywe.mongodb.net/?retryWrites=true&w=majority`,
   )
 
   await fn(client.db(), client)

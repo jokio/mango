@@ -239,11 +239,8 @@ export class MangoRepo<TDocument extends Document> {
       })
     }
 
-    const finalResult = value.value
-      ? transformDocumentBack<TDocument>(
-          value.value as any,
-          this.options,
-        )
+    const finalResult = value
+      ? transformDocumentBack<TDocument>(value as any, this.options)
       : null
 
     return finalResult
